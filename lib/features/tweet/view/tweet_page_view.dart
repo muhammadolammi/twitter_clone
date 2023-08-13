@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,21 +20,23 @@ class TweetPage extends ConsumerStatefulWidget {
 }
 
 class _TweetPageState extends ConsumerState<TweetPage> {
+  final _tweetcontroller = TextEditingController();
+  List images = [];
+
+  @override
+  void dispose() {
+    _tweetcontroller.dispose();
+    super.dispose();
+  }
+
+  void onPickImages() async {
+    images = await getImages();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final userData = ref.watch(getCurrentUserDataProvider).value;
-    final _tweet_controller = TextEditingController();
-    List<File> images = [];
-    @override
-    void dispose() {
-      _tweet_controller.dispose();
-      super.dispose();
-    }
-
-    void onPickImage() async {
-      images = await pickImages();
-      setState(() {});
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -69,7 +72,7 @@ class _TweetPageState extends ConsumerState<TweetPage> {
                         ),
                         Expanded(
                           child: TextField(
-                            controller: _tweet_controller,
+                            controller: _tweetcontroller,
                             style: const TextStyle(fontSize: 22),
                             decoration: const InputDecoration(
                               hintText: "What's Happening?",
@@ -85,15 +88,32 @@ class _TweetPageState extends ConsumerState<TweetPage> {
                         ),
                       ],
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     if (images.isNotEmpty)
                       CarouselSlider(
-                          items: images.map((file) {
-                            return Image.file(file);
-                          }).toList(),
-                          options: CarouselOptions(
-                            height: 400,
-                            enableInfiniteScroll: false,
-                          ))
+                        items: images.map(
+                          (imageSrc) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 5,
+                              ),
+                              child: kIsWeb
+                                  ? Image.network(imageSrc.toString())
+                                  : Image.file(imageSrc),
+                            );
+                          },
+                        ).toList(),
+                        options: CarouselOptions(
+                          height: 400,
+                          enableInfiniteScroll: false,
+                        ),
+                      ),
+                    Row(
+                      children: [Text('data')],
+                    )
                   ],
                 ),
               ),
@@ -114,7 +134,7 @@ class _TweetPageState extends ConsumerState<TweetPage> {
               right: 15,
             ),
             child: GestureDetector(
-                onTap: onPickImage,
+                onTap: onPickImages,
                 child: SvgPicture.asset(AssetsConstants.galleryIcon)),
           ),
           Padding(

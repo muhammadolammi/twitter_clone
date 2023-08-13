@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stack_trace/stack_trace.dart';
 import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/common/error_page.dart';
 import 'package:twitter_clone/features/auth/veiws/login_view.dart';
@@ -7,11 +8,21 @@ import 'package:twitter_clone/features/auth/veiws/signup_view.dart';
 import 'package:twitter_clone/features/controller/auth_controller.dart';
 import 'package:twitter_clone/features/home/view/home_view.dart';
 import 'package:twitter_clone/features/tweet/view/tweet_page_view.dart';
+import 'package:twitter_clone/imagetest.dart';
 import 'package:twitter_clone/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  FlutterError.demangleStackTrace = (StackTrace stack) {
+    // Trace and Chain are classes in package:stack_trace
+    if (stack is Trace) {
+      return stack.vmTrace;
+    }
+    if (stack is Chain) {
+      return stack.toTrace().vmTrace;
+    }
+    return stack;
+  };
   runApp(const ProviderScope(child: const MyApp()));
 }
 
@@ -30,6 +41,7 @@ class MyApp extends ConsumerWidget {
       },
       theme: AppTheme.theme,
       debugShowCheckedModeBanner: false,
+      // home: showImages(),
       home: accountStatus.when(
         data: (user) {
           if (user != null) {

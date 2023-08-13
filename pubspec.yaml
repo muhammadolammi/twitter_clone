@@ -38,9 +38,11 @@ dependencies:
   appwrite: ^9.0.1
   flutter_riverpod: ^2.3.6
   flutter_svg: ^2.0.7
-  fpdart: ^0.6.0
+  fpdart: ^1.0.0
   image_picker: ^1.0.1
   carousel_slider: ^4.2.1
+  multiple_images_picker: ^1.0.1
+  stack_trace: ^1.11.0
 
 dev_dependencies:
   flutter_test:

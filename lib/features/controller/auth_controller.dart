@@ -9,12 +9,12 @@ import 'package:appwrite/models.dart' as model;
 import 'package:twitter_clone/models/user_model.dart';
 
 final getCurrentUserDataProvider = FutureProvider((ref) async {
-  final userId = ref.watch(currentUserAccountProvider).value!.$id;
+  final userId = ref.watch(currentUserAccountProvider).value?.$id;
   final getUserData = ref.watch(getUserDataProvider(userId));
-  return getUserData.value;
+  return getUserData.asData?.value;
 });
 
-final getUserDataProvider = FutureProvider.family((ref, String userId) async {
+final getUserDataProvider = FutureProvider.family((ref, String? userId) async {
   final authController = ref.watch(authControllerProvider.notifier);
 
   return authController.getUserData(userId: userId);
@@ -39,10 +39,11 @@ class AuthController extends StateNotifier<bool> {
       : _authApi = authApi,
         _userApi = userApi,
         super(false);
-  Future<model.User?> currentUserAccount() {
-    final res = _authApi.currentUserAccount();
-    return res;
-  }
+  // Future<model.User?> currentUserAccount() {
+  //   final res = _authApi.currentUserAccount();
+  //   return res;
+  // }
+  Future<model.User?> currentUserAccount() => _authApi.currentUserAccount();
 
   void signUp({
     required String email,

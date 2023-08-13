@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'package:multiple_images_picker/multiple_images_picker.dart';
 
 import 'package:image_picker/image_picker.dart';
 
@@ -15,12 +17,16 @@ String getName(String email) {
   return name;
 }
 
-Future<List<File>> pickImages() async {
-  List<File> images = [];
-  final ImagePicker picker = ImagePicker();
+Future<List> getImages() async {
+  List images = [];
+  ImagePicker picker = ImagePicker();
   final imageFiles = await picker.pickMultiImage();
-  if (imageFiles.isNotEmpty) {
-    for (final image in imageFiles) {
+  if (imageFiles.isNotEmpty || kIsWeb) {
+    for (var image in imageFiles) {
+      images.add(image.path);
+    }
+  } else if (imageFiles.isNotEmpty) {
+    for (var image in imageFiles) {
       images.add(File(image.path));
     }
   }
