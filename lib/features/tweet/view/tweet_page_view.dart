@@ -9,6 +9,7 @@ import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/constants/assets_consts.dart';
 import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/controller/auth_controller.dart';
+import 'package:twitter_clone/features/tweet/view/controller/tweetcontroller.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
 class TweetPage extends ConsumerStatefulWidget {
@@ -36,7 +37,9 @@ class _TweetPageState extends ConsumerState<TweetPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userData = ref.watch(getCurrentUserDataProvider).value;
+    final userData = ref.watch(getCurrentUserDataProvider).asData?.value;
+    final loading = ref.watch(tweetControllerProvider);
+    final tweetFuncs = ref.watch(tweetControllerProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -48,14 +51,19 @@ class _TweetPageState extends ConsumerState<TweetPage> {
         ),
         actions: [
           RoundedSmallButton(
-            onTap: () {},
+            onTap: () {
+              tweetFuncs.sharetweet(
+                  images: images,
+                  text: _tweetcontroller.text,
+                  context: context);
+            },
             label: 'Tweet',
             backGroundColor: Pallete.blueColor,
             labelColor: Pallete.whiteColor,
           )
         ],
       ),
-      body: userData == null
+      body: loading || userData == null
           ? const Loader()
           : SafeArea(
               child: SingleChildScrollView(
@@ -111,9 +119,6 @@ class _TweetPageState extends ConsumerState<TweetPage> {
                           enableInfiniteScroll: false,
                         ),
                       ),
-                    Row(
-                      children: [Text('data')],
-                    )
                   ],
                 ),
               ),

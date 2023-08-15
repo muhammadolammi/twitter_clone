@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+@immutable
 class UserModel {
   final String name;
 
@@ -14,7 +14,7 @@ class UserModel {
   final List<String> followers;
   final List<String> following;
   final bool isTwitterBlue;
-  UserModel({
+  const UserModel({
     required this.name,
     required this.email,
     required this.uid,
@@ -76,11 +76,6 @@ class UserModel {
       isTwitterBlue: map['isTwitterBlue'] as bool,
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory UserModel.fromJson(String source) =>
-      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {

@@ -19,21 +19,21 @@ class SignUpView extends ConsumerStatefulWidget {
 
 class _SignUpViewState extends ConsumerState<SignUpView> {
   final appBar = UiConstants.appbar();
-  final _email_controller = TextEditingController();
-  final _password_controller = TextEditingController();
+  final _emailcontroller = TextEditingController();
+  final _passwordcontroller = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
-    _email_controller.dispose();
-    _password_controller.dispose();
+    _emailcontroller.dispose();
+    _passwordcontroller.dispose();
   }
 
   void onSignUp() {
     final res = ref.read(authControllerProvider.notifier);
     return res.signUp(
-        email: _email_controller.text,
-        password: _password_controller.text,
+        email: _emailcontroller.text,
+        password: _passwordcontroller.text,
         context: context);
   }
 
@@ -53,7 +53,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                   child: Column(children: [
                     //textfield 1
                     AuthField(
-                      controller: _email_controller,
+                      controller: _emailcontroller,
                       hintText: 'Email',
                     ),
                     const SizedBox(
@@ -61,7 +61,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                     ),
                     //textfield 2
                     AuthField(
-                      controller: _password_controller,
+                      controller: _passwordcontroller,
                       hintText: 'Password',
                     ),
 
