@@ -22,7 +22,8 @@ class TweetPage extends ConsumerStatefulWidget {
 
 class _TweetPageState extends ConsumerState<TweetPage> {
   final _tweetcontroller = TextEditingController();
-  List images = [];
+  List<File> images = [];
+  List<String> imagesUrl = [];
 
   @override
   void dispose() {
@@ -47,7 +48,7 @@ class _TweetPageState extends ConsumerState<TweetPage> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.close),
+          icon: const Icon(Icons.close),
         ),
         actions: [
           RoundedSmallButton(
@@ -109,7 +110,7 @@ class _TweetPageState extends ConsumerState<TweetPage> {
                                 horizontal: 5,
                               ),
                               child: kIsWeb
-                                  ? Image.network(imageSrc.toString())
+                                  ? Image.network(imageSrc.path)
                                   : Image.file(imageSrc),
                             );
                           },
@@ -124,7 +125,7 @@ class _TweetPageState extends ConsumerState<TweetPage> {
               ),
             ),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.only(bottom: 10),
         decoration: const BoxDecoration(
             border: Border(
           top: BorderSide(

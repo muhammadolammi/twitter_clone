@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
-import 'package:twitter_clone/common/rounded_smallbutton.dart';
 import 'package:twitter_clone/constants/constants.dart';
 import 'package:twitter_clone/features/auth/veiws/signup_view.dart';
 import 'package:twitter_clone/features/controller/auth_controller.dart';

@@ -16,8 +16,8 @@ class UiConstants {
   }
 
   static List<Widget> bottomNavigationPages = [
-    Text('Tweet Page'),
-    Text('Search Page'),
-    Text('Notf Page'),
+    const Text('Tweet Page'),
+    const Text('Search Page'),
+    const Text('Notf Page'),
   ];
 }

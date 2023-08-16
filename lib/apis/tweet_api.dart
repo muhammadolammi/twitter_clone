@@ -9,8 +9,8 @@ import '../constants/appwrite_consts.dart';
 import '../models/tweetmodel.dart';
 
 final tweetApiProvider = Provider((ref) {
-  final _db = ref.watch(appwriteDatabaseProvider);
-  return TweetApi(db: _db);
+  final db = ref.watch(appwriteDatabaseProvider);
+  return TweetApi(db: db);
 });
 
 abstract class ITweetApi {
@@ -25,8 +25,8 @@ class TweetApi implements ITweetApi {
   FutureEither<Document> shareTweet(Tweet tweet) async {
     try {
       final document = await _db.createDocument(
-          databaseId: AppWriteConstant.databaseId,
-          collectionId: AppWriteConstant.tweetCollectionId,
+          databaseId: AppWriteConstants.databaseId,
+          collectionId: AppWriteConstants.tweetCollectionId,
           documentId: ID.unique(),
           data: tweet.toMap());
       return Either.right(document);

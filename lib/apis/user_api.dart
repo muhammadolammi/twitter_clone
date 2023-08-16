@@ -26,8 +26,8 @@ class UserApi implements IUserApi {
   FutureEitherVoid saveUserData({required UserModel userModel}) async {
     try {
       final document = await _db.createDocument(
-          databaseId: AppWriteConstant.databaseId,
-          collectionId: AppWriteConstant.userCollectionId,
+          databaseId: AppWriteConstants.databaseId,
+          collectionId: AppWriteConstants.userCollectionId,
           documentId: userModel.uid,
           data: userModel.toMap());
       return Either.right(document);
@@ -42,8 +42,8 @@ class UserApi implements IUserApi {
   @override
   Future<model.Document> getUserDetails({required userId}) {
     return _db.getDocument(
-        databaseId: AppWriteConstant.databaseId,
-        collectionId: AppWriteConstant.userCollectionId,
+        databaseId: AppWriteConstants.databaseId,
+        collectionId: AppWriteConstants.userCollectionId,
         documentId: userId);
   }
 }

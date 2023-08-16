@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:twitter_clone/common/common.dart';
-import 'package:twitter_clone/common/error_page.dart';
 import 'package:twitter_clone/features/auth/veiws/login_view.dart';
 import 'package:twitter_clone/features/auth/veiws/signup_view.dart';
 import 'package:twitter_clone/features/controller/auth_controller.dart';
 import 'package:twitter_clone/features/home/view/home_view.dart';
 import 'package:twitter_clone/features/tweet/view/tweet_page_view.dart';
-import 'package:twitter_clone/imagetest.dart';
 import 'package:twitter_clone/theme/theme.dart';
 
 void main() async {
@@ -23,7 +21,7 @@ void main() async {
     }
     return stack;
   };
-  runApp(const ProviderScope(child: const MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
