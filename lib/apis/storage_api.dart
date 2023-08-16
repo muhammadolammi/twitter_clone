@@ -14,7 +14,7 @@ class StorageApi {
   final Storage _storage;
   StorageApi({required Storage storage}) : _storage = storage;
 
-  Future<List<String>> uploadImage(List<File> files) async {
+  Future<List<String>> getImageLinks(List<File> files) async {
     List<String> imageLinks = [];
     for (final file in files) {
       final uploadedImage = await _storage.createFile(
