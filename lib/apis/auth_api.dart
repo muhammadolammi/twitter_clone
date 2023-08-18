@@ -3,7 +3,7 @@ import 'package:appwrite/models.dart' as model;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:twitter_clone/core/core.dart';
-import 'package:twitter_clone/core/provider.dart';
+import 'package:twitter_clone/provider/provider.dart';
 
 final authApiProvider = Provider((ref) {
   final account = ref.watch(appWriteAccountProvider);

@@ -3,24 +3,30 @@ import 'package:appwrite/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:twitter_clone/core/core.dart';
-import 'package:twitter_clone/core/provider.dart';
+import 'package:twitter_clone/provider/provider.dart';
 
 import '../constants/appwrite_consts.dart';
 import '../models/tweetmodel.dart';
 
 final tweetApiProvider = Provider((ref) {
   final db = ref.watch(appwriteDatabaseProvider);
-  return TweetApi(db: db);
+  final realtime = ref.watch(appwriteRealtimeProvider);
+  return TweetApi(db: db, realtime: realtime);
 });
 
 abstract class ITweetApi {
   FutureEither<Document> shareTweet(Tweet tweet);
   Future<List<Document>> getTweet();
+  Stream<RealtimeMessage> getLatestTweets();
 }
 
 class TweetApi implements ITweetApi {
   final Databases _db;
-  TweetApi({required Databases db}) : _db = db;
+  final Realtime _realtime;
+
+  TweetApi({required Databases db, required Realtime realtime})
+      : _db = db,
+        _realtime = realtime;
 
   @override
   FutureEither<Document> shareTweet(Tweet tweet) async {
@@ -45,5 +51,12 @@ class TweetApi implements ITweetApi {
         databaseId: AppWriteConstants.databaseId,
         collectionId: AppWriteConstants.tweetCollectionId);
     return document.documents;
+  }
+
+  @override
+  Stream<RealtimeMessage> getLatestTweets() {
+    return _realtime.subscribe([
+      'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.tweetCollectionId}.documents'
+    ]).stream;
   }
 }

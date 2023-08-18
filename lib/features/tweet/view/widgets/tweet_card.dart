@@ -78,7 +78,8 @@ class TweetCard extends ConsumerWidget {
                           const SizedBox(
                             height: 4,
                           ),
-                          if (tweet.tweetType == TweetType.text)
+                          if (tweet.tweetType == TweetType.text &&
+                              tweet.link.isNotEmpty)
                             AnyLinkPreview(
                               link: tweet.link,
                               displayDirection:

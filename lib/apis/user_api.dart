@@ -4,7 +4,7 @@ import 'package:appwrite/models.dart' as model;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/constants/constants.dart';
 import 'package:twitter_clone/core/core.dart';
-import 'package:twitter_clone/core/provider.dart';
+import 'package:twitter_clone/provider/provider.dart';
 import 'package:twitter_clone/models/user_model.dart';
 import 'package:fpdart/fpdart.dart';
 

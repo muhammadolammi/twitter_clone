@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/constants/appwrite_consts.dart';
-import 'package:twitter_clone/core/provider.dart';
+import 'package:twitter_clone/provider/provider.dart';
 
 final storageApiProvider = Provider((ref) {
   final storage = ref.watch(appwriteStorgaeProvider);
