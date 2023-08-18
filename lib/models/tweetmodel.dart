@@ -8,7 +8,7 @@ import '../core/tweet_type_enum.dart';
 class Tweet {
   final String text;
   final List<String> hashtags;
-  final List<String> links;
+  final String link;
   final List<String> imageLinks;
   final String uid;
   final TweetType tweetType;
@@ -22,7 +22,7 @@ class Tweet {
   const Tweet({
     required this.text,
     required this.hashtags,
-    required this.links,
+    required this.link,
     required this.imageLinks,
     required this.uid,
     required this.tweetType,
@@ -38,7 +38,7 @@ class Tweet {
   Tweet copyWith({
     String? text,
     List<String>? hashtags,
-    List<String>? links,
+    String? link,
     List<String>? imageLinks,
     String? uid,
     TweetType? tweetType,
@@ -53,7 +53,7 @@ class Tweet {
     return Tweet(
       text: text ?? this.text,
       hashtags: hashtags ?? this.hashtags,
-      links: links ?? this.links,
+      link: link ?? this.link,
       imageLinks: imageLinks ?? this.imageLinks,
       uid: uid ?? this.uid,
       tweetType: tweetType ?? this.tweetType,
@@ -71,7 +71,7 @@ class Tweet {
     return <String, dynamic>{
       'text': text,
       'hashtags': hashtags,
-      'links': links,
+      'link': link,
       'imageLinks': imageLinks,
       'uid': uid,
       'tweetType': tweetType.type,
@@ -87,24 +87,48 @@ class Tweet {
   factory Tweet.fromMap(Map<String, dynamic> map) {
     return Tweet(
       text: map['text'] as String,
-      hashtags: List<String>.from((map['hashtags'] as List<String>)),
-      links: List<String>.from((map['links'] as List<String>)),
-      imageLinks: List<String>.from((map['imageLinks'] as List<String>)),
+      hashtags: List<String>.from((map['hashtags'] ?? []) as List<dynamic>)
+          .cast<String>(), // Cast each element to String
+      link: map['link'] as String, // Cast each element to String
+      imageLinks: List<String>.from((map['imageLinks'] ?? []) as List<dynamic>)
+          .cast<String>(), // Cast each element to String
       uid: map['uid'] as String,
-      tweetType: (map['tweetType'] as String).toTweetTypeEnum(),
+      tweetType: (map['tweetType'] as String)
+          .toTweetTypeEnum(), // Make sure to define and implement this conversion correctly
       tweetedAt: DateTime.fromMillisecondsSinceEpoch(map['tweetedAt'] as int),
-      likes: List<String>.from((map['likes'] as List<String>)),
-      commentIds: List<String>.from((map['commentIds'] as List<String>)),
+      likes: List<String>.from((map['likes'] ?? []) as List<dynamic>)
+          .cast<String>(), // Cast each element to String
+      commentIds: List<String>.from((map['commentIds'] ?? []) as List<dynamic>)
+          .cast<String>(), // Cast each element to String
       id: map['\$id'] as String,
       reshareCount: map['reshareCount'] as int,
       retweetedBy: map['retweetedBy'] as String,
       repliedTo: map['repliedTo'] as String,
     );
   }
+// In this code, I've added .cast<String>() to each of the List.from statements. This is necessary because the .from method expects an iterable of a specific type, and sometimes the type inference might not be accurate when working with dynamic types. Casting the elements of the list explicitly should ensure that you're dealing with a list of strings.
+
+  // factory Tweet.fromMap(Map<String, dynamic> map) {
+  //   return Tweet(
+  //     text: map['text'] as String,
+  //     hashtags: List<String>.from((map['hashtags'] as List<String>)),
+  //     links: List<String>.from((map['links'] as List<String>)),
+  //     imageLinks: List<String>.from((map['imageLinks'] as List<String>)),
+  //     uid: map['uid'] as String,
+  //     tweetType: (map['tweetType'] as String).toTweetTypeEnum(),
+  //     tweetedAt: DateTime.fromMillisecondsSinceEpoch(map['tweetedAt'] as int),
+  //     likes: List<String>.from((map['likes'] as List<String>)),
+  //     commentIds: List<String>.from((map['commentIds'] as List<String>)),
+  //     id: map['\$id'] as String,
+  //     reshareCount: map['reshareCount'] as int,
+  //     retweetedBy: map['retweetedBy'] as String,
+  //     repliedTo: map['repliedTo'] as String,
+  //   );
+  // }
 
   @override
   String toString() {
-    return 'Tweet(text: $text, hashtags: $hashtags, links: $links, imageLinks: $imageLinks, uid: $uid, tweetType: $tweetType, tweetedAt: $tweetedAt, likes: $likes, commentIds: $commentIds, id: $id, reshareCount: $reshareCount, retweetedBy: $retweetedBy, repliedTo: $repliedTo)';
+    return 'Tweet(text: $text, hashtags: $hashtags, link: $link, imageLinks: $imageLinks, uid: $uid, tweetType: $tweetType, tweetedAt: $tweetedAt, likes: $likes, commentIds: $commentIds, id: $id, reshareCount: $reshareCount, retweetedBy: $retweetedBy, repliedTo: $repliedTo)';
   }
 
   @override
@@ -113,7 +137,7 @@ class Tweet {
 
     return other.text == text &&
         listEquals(other.hashtags, hashtags) &&
-        listEquals(other.links, links) &&
+        other.link == link &&
         listEquals(other.imageLinks, imageLinks) &&
         other.uid == uid &&
         other.tweetType == tweetType &&
@@ -130,7 +154,7 @@ class Tweet {
   int get hashCode {
     return text.hashCode ^
         hashtags.hashCode ^
-        links.hashCode ^
+        link.hashCode ^
         imageLinks.hashCode ^
         uid.hashCode ^
         tweetType.hashCode ^

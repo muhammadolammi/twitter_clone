@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter_clone/constants/assets_consts.dart';
+import 'package:twitter_clone/features/tweet/view/widgets/tweet_list.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
 class UiConstants {
@@ -16,7 +17,7 @@ class UiConstants {
   }
 
   static List<Widget> bottomNavigationPages = [
-    const Text('Tweet Page'),
+    const TweetList(),
     const Text('Search Page'),
     const Text('Notf Page'),
   ];

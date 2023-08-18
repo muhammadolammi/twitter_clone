@@ -43,6 +43,8 @@ dependencies:
   carousel_slider: ^4.2.1
   stack_trace: ^1.11.0
   flutter_linkify: ^6.0.0
+  timeago: ^3.5.0
+  any_link_preview: ^3.0.1
 
 dev_dependencies:
   flutter_test:
