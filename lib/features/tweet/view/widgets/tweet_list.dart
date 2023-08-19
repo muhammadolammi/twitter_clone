@@ -16,26 +16,26 @@ class TweetList extends ConsumerWidget {
           data: (tweets) {
             return ref.watch(getLatestProvider).when(
                 data: (data) {
+                  print('data');
+                  final newTweets = tweets;
                   if (data.events.contains(
                       'databases.*.collections.${AppWriteConstants.tweetCollectionId}.documents.*.create')) {
-                    tweets.add(Tweet.fromMap(data.payload));
+                    newTweets.add(Tweet.fromMap(data.payload));
                   }
                   return ListView.builder(
                       itemCount: tweets.length,
                       itemBuilder: ((BuildContext context, int index) {
-                        final reversedTweets = tweets.reversed.toList();
-                        reversedTweets.removeAt(0);
-                        final tweet = reversedTweets[index];
+                        final tweet = newTweets[index];
                         return TweetCard(tweet: tweet);
                       }));
                 },
                 error: (e, st) => ErrorText(error: e.toString()),
                 loading: () {
+                  print('loading');
                   return ListView.builder(
                       itemCount: tweets.length,
                       itemBuilder: ((BuildContext context, int index) {
-                        final reversedTweets = tweets.reversed.toList();
-                        final tweet = reversedTweets[index];
+                        final tweet = tweets[index];
                         return TweetCard(tweet: tweet);
                       }));
                 });

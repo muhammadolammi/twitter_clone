@@ -6,7 +6,7 @@ import 'package:twitter_clone/features/auth/veiws/login_view.dart';
 import 'package:twitter_clone/features/auth/veiws/signup_view.dart';
 import 'package:twitter_clone/features/controller/auth_controller.dart';
 import 'package:twitter_clone/features/home/view/home_view.dart';
-import 'package:twitter_clone/features/tweet/view/tweet_page_view.dart';
+import 'package:twitter_clone/features/tweet/view/create_tweet_page_view.dart';
 import 'package:twitter_clone/theme/theme.dart';
 
 void main() async {

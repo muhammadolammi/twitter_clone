@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter_clone/constants/constants.dart';
-import 'package:twitter_clone/features/tweet/view/tweet_page_view.dart';
+import 'package:twitter_clone/features/tweet/view/create_tweet_page_view.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
 class HomeView extends ConsumerStatefulWidget {
@@ -16,7 +16,6 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
-  final appBar = UiConstants.appbar();
   final bottomNavigationPages = UiConstants.bottomNavigationPages;
 
   int _page = 0;
@@ -33,7 +32,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar,
+      appBar: UiConstants.appbar(),
       body: IndexedStack(
         index: _page,
         children: bottomNavigationPages,
