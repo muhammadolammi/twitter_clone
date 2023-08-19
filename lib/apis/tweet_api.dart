@@ -2,8 +2,8 @@ import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:twitter_clone/core/core.dart';
-import 'package:twitter_clone/provider/provider.dart';
+import '../core/core.dart';
+import '../provider/provider.dart';
 
 import '../constants/appwrite_consts.dart';
 import '../models/tweetmodel.dart';
@@ -16,6 +16,10 @@ final tweetApiProvider = Provider((ref) {
 
 abstract class ITweetApi {
   FutureEither<Document> shareTweet(Tweet tweet);
+  FutureEither<Document> reshareTweet(Tweet tweet);
+
+  FutureEither<Document> likeTweet(Tweet tweet);
+
   Future<List<Document>> getTweet();
   Stream<RealtimeMessage> getLatestTweets();
 }
@@ -59,5 +63,30 @@ class TweetApi implements ITweetApi {
     return _realtime.subscribe([
       'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.tweetCollectionId}.documents'
     ]).stream;
+  }
+
+  @override
+  FutureEither<Document> likeTweet(Tweet tweet) async {
+    try {
+      final document = await _db.updateDocument(
+          databaseId: AppWriteConstants.databaseId,
+          collectionId: AppWriteConstants.tweetCollectionId,
+          documentId: tweet.id,
+          data: {
+            'likes': tweet.likes,
+          });
+      return Either.right(document);
+    } on AppwriteException catch (e, st) {
+      return Either.left(
+          Failure(e.message ?? 'Some Unexpected Error Occured', st));
+    } catch (e, st) {
+      return Either.left(Failure(e.toString(), st));
+    }
+  }
+
+  @override
+  FutureEither<Document> reshareTweet(Tweet tweet) {
+    // TODO: implement reshareTweet
+    throw UnimplementedError();
   }
 }
