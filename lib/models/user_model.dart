@@ -3,7 +3,7 @@
 import 'package:flutter/foundation.dart';
 
 @immutable
-class UserModel {
+class User {
   final String name;
 
   final String email;
@@ -14,7 +14,7 @@ class UserModel {
   final List<String> followers;
   final List<String> following;
   final bool isTwitterBlue;
-  const UserModel({
+  const User({
     required this.name,
     required this.email,
     required this.uid,
@@ -26,7 +26,7 @@ class UserModel {
     required this.isTwitterBlue,
   });
 
-  UserModel copyWith({
+  User copyWith({
     String? name,
     String? email,
     String? uid,
@@ -37,7 +37,7 @@ class UserModel {
     List<String>? following,
     bool? isTwitterBlue,
   }) {
-    return UserModel(
+    return User(
       name: name ?? this.name,
       email: email ?? this.email,
       uid: uid ?? this.uid,
@@ -63,8 +63,8 @@ class UserModel {
     };
   }
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
-    return UserModel(
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
       name: map['name'] as String,
       email: map['email'] as String,
       uid: map['\$id'] as String,
@@ -83,7 +83,7 @@ class UserModel {
   }
 
   @override
-  bool operator ==(covariant UserModel other) {
+  bool operator ==(covariant User other) {
     if (identical(this, other)) return true;
 
     return other.name == name &&

@@ -16,26 +16,50 @@ class TweetList extends ConsumerWidget {
           data: (tweets) {
             return ref.watch(getLatestProvider).when(
                 data: (data) {
-                  print('data');
-                  final newTweets = tweets;
                   if (data.events.contains(
                       'databases.*.collections.${AppWriteConstants.tweetCollectionId}.documents.*.create')) {
-                    newTweets.add(Tweet.fromMap(data.payload));
+                    tweets.insert(0, Tweet.fromMap(data.payload));
+                  } else if (data.events.contains(
+                    'databases.*.collections.${AppWriteConstants.tweetCollectionId}.documents.*.update',
+                  )) {
+                    // get id of original tweet
+                    final startingPoint =
+                        data.events[0].lastIndexOf('documents.');
+                    final endPoint = data.events[0].lastIndexOf('.update');
+                    final tweetId =
+                        data.events[0].substring(startingPoint + 10, endPoint);
+
+                    var tweet =
+                        tweets.where((element) => element.id == tweetId).first;
+
+                    final tweetIndex = tweets.indexOf(tweet);
+                    tweets.removeWhere((element) => element.id == tweetId);
+
+                    tweet = Tweet.fromMap(data.payload);
+                    tweets.insert(tweetIndex, tweet);
                   }
+
+                  print('data');
+                  print(data.events[0]);
+                  print(tweets.length);
+
                   return ListView.builder(
                       itemCount: tweets.length,
-                      itemBuilder: ((BuildContext context, int index) {
-                        final tweet = newTweets[index];
+                      itemBuilder: ((BuildContext context, int tweetIndex) {
+                        final tweet = tweets[tweetIndex];
                         return TweetCard(tweet: tweet);
                       }));
                 },
                 error: (e, st) => ErrorText(error: e.toString()),
                 loading: () {
+                  print(tweets.length);
+
                   print('loading');
+
                   return ListView.builder(
                       itemCount: tweets.length,
-                      itemBuilder: ((BuildContext context, int index) {
-                        final tweet = tweets[index];
+                      itemBuilder: ((BuildContext context, int tweetIndex) {
+                        final tweet = tweets[tweetIndex];
                         return TweetCard(tweet: tweet);
                       }));
                 });

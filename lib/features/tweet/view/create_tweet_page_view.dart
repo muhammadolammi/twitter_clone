@@ -9,6 +9,7 @@ import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/constants/assets_consts.dart';
 import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/controller/auth_controller.dart';
+import 'package:twitter_clone/features/home/view/home_view.dart';
 import 'package:twitter_clone/features/tweet/view/controller/tweetcontroller.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 

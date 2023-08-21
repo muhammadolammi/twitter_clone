@@ -48,6 +48,18 @@ class TweetCard extends ConsumerWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                if (tweet.retweetedBy.isNotEmpty)
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        AssetsConstants.retweetIcon,
+                                        height: 20,
+                                        colorFilter: const ColorFilter.mode(
+                                            Pallete.greyColor, BlendMode.srcIn),
+                                      ),
+                                      Text("${tweet.retweetedBy} retweeted"),
+                                    ],
+                                  ),
                                 Row(
                                   children: [
                                     const Text(
@@ -115,7 +127,15 @@ class TweetCard extends ConsumerWidget {
                                             tweet.commentIds.length.toString(),
                                       ),
                                       TweetIconButton(
-                                        onTap: () {},
+                                        onTap: () {
+                                          ref
+                                              .read(tweetControllerProvider
+                                                  .notifier)
+                                              .reshareTweet(
+                                                  context: context,
+                                                  tweet: tweet,
+                                                  currentUser: currentUser);
+                                        },
                                         pathName: AssetsConstants.retweetIcon,
                                         text: tweet.retweetCount.toString(),
                                       ),

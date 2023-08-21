@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/apis/storage_api.dart';
@@ -7,8 +8,9 @@ import 'package:twitter_clone/apis/tweet_api.dart';
 import 'package:twitter_clone/core/core.dart';
 import 'package:twitter_clone/core/utils.dart';
 import 'package:twitter_clone/features/controller/auth_controller.dart';
-import 'package:twitter_clone/features/home/view/home_view.dart';
 import 'package:twitter_clone/models/tweetmodel.dart';
+
+import '../../../../models/user_model.dart';
 
 final tweetControllerProvider =
     StateNotifierProvider.autoDispose<TweetController, bool>((ref) {
@@ -50,8 +52,10 @@ class TweetController extends StateNotifier<bool> {
       required BuildContext context,
     }) async {
       state = true;
+
       final user = _ref.watch(getCurrentUserDataProvider).value!;
       final imageLinks = await _storageApi.getImageLinks(images);
+
       Tweet tweet = Tweet(
           text: text,
           hashtags: getHashtags(text),
@@ -62,13 +66,14 @@ class TweetController extends StateNotifier<bool> {
           tweetedAt: DateTime.now(),
           likes: const [],
           commentIds: const [],
-          id: '',
-          reshareCount: 0,
+          id: ID.unique(),
+          retweetCount: 0,
           retweetedBy: '',
           repliedTo: '');
       final res = await _tweetApi.shareTweet(tweet);
-      res.fold((l) => showSnackBar(content: l.message, context: context),
-          (r) => Navigator.popAndPushNamed(context, HomeView.routeId));
+      res.fold((l) => showSnackBar(content: l.message, context: context), (r) {
+        Navigator.pop(context);
+      });
       state = false;
     }
 
@@ -79,6 +84,7 @@ class TweetController extends StateNotifier<bool> {
       state = true;
 
       final user = _ref.watch(getCurrentUserDataProvider).value!;
+
       Tweet tweet = Tweet(
           text: text,
           hashtags: getHashtags(text),
@@ -89,13 +95,14 @@ class TweetController extends StateNotifier<bool> {
           tweetedAt: DateTime.now(),
           likes: const [],
           commentIds: const [],
-          id: '',
-          reshareCount: 0,
+          id: ID.unique(),
+          retweetCount: 0,
           retweetedBy: '',
           repliedTo: '');
       final res = await _tweetApi.shareTweet(tweet);
-      res.fold((l) => showSnackBar(content: l.message, context: context),
-          (r) => Navigator.popAndPushNamed(context, HomeView.routeId));
+      res.fold((l) => showSnackBar(content: l.message, context: context), (r) {
+        Navigator.pop(context);
+      });
       state = false;
     }
 
@@ -107,6 +114,40 @@ class TweetController extends StateNotifier<bool> {
     } else {
       shareTextTweet(text: text, context: context);
     }
+  }
+
+  void reshareTweet(
+      {required Tweet tweet,
+      required User currentUser,
+      required BuildContext context}) async {
+    final oldtweet = tweet.copyWith(
+      retweetedBy: currentUser.name,
+      reshareCount: tweet.retweetCount + 1,
+    );
+    final res = await _tweetApi.updatereshareCount(oldtweet);
+    res.fold((l) => showSnackBar(content: l.message, context: context),
+        (r) async {
+      final newTweet = oldtweet.copyWith(
+        retweetedBy: currentUser.name,
+        tweetedAt: DateTime.now(),
+        id: '${oldtweet.id}${oldtweet.retweetCount}',
+      );
+      final res2 = await _tweetApi.shareTweet(newTweet);
+      res2.fold((l) => showSnackBar(content: l.message, context: context),
+          (r) => showSnackBar(content: 'Retweeted', context: context));
+    });
+  }
+
+  void likeTweet({required Tweet tweet, required User user}) async {
+    List<String> likes = tweet.likes;
+    if (tweet.likes.contains(user.uid)) {
+      likes.remove(user.uid);
+    } else {
+      likes.add(user.uid);
+    }
+    tweet = tweet.copyWith(likes: likes);
+    final res = await _tweetApi.likeTweet(tweet);
+    res.fold((l) => null, (r) => null);
   }
 
   Future<List<Tweet>> getTweets() async {

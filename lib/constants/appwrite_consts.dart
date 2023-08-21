@@ -4,6 +4,7 @@ class AppWriteConstants {
   static const String endPoint = 'https://cloud.appwrite.io/v1';
   static const String userCollectionId = '649957afd8523b30d66d';
   static const String tweetCollectionId = "64dab65e016a22a37bc5";
+
   static const String imagesBucket = "64db58f65a3bc91bdc3c";
 
   static String imageUrl(String imageId) =>

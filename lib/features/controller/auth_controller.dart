@@ -52,7 +52,7 @@ class AuthController extends StateNotifier<bool> {
     state = false;
     res.fold((l) => showSnackBar(context: context, content: l.message),
         (r) async {
-      UserModel user = UserModel(
+      User user = User(
           name: getName(email),
           email: email,
           uid: r.$id,
@@ -84,9 +84,9 @@ class AuthController extends StateNotifier<bool> {
     });
   }
 
-  Future<UserModel> getUserData({required userId}) async {
+  Future<User> getUserData({required userId}) async {
     final document = await _userApi.getUserDetails(userId: userId);
-    final updatedUser = UserModel.fromMap(document.data);
+    final updatedUser = User.fromMap(document.data);
     return updatedUser;
   }
 }

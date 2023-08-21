@@ -46,6 +46,8 @@ dependencies:
   timeago: ^3.5.0
   any_link_preview: ^3.0.1
   cached_network_image: ^3.2.3
+  like_button: ^2.0.5
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:

@@ -14,7 +14,7 @@ final userApiProvider = Provider((ref) {
 });
 
 abstract class IUserApi {
-  FutureEitherVoid saveUserData({required UserModel userModel});
+  FutureEitherVoid saveUserData({required User userModel});
   Future<model.Document> getUserDetails({required userId});
 }
 
@@ -23,7 +23,7 @@ class UserApi implements IUserApi {
   UserApi({required Databases db}) : _db = db;
 
   @override
-  FutureEitherVoid saveUserData({required UserModel userModel}) async {
+  FutureEitherVoid saveUserData({required User userModel}) async {
     try {
       final document = await _db.createDocument(
           databaseId: AppWriteConstants.databaseId,
